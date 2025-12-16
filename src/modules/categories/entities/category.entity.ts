@@ -1,26 +1,32 @@
 import {
   Column,
   Entity,
+  Index,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Subcategory } from './subcategory.entity';
+import { IsNotEmpty } from 'class-validator';
 
 @Entity('Categories')
 export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 100 })
+  @IsNotEmpty()
   name: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'int', nullable: true })
   parentId: number;
 
+  @Index()
   @ManyToOne(() => Category, (category) => category.children, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'parent_id' })
   parent: Category;
 
   @OneToMany(() => Category, (category) => category.parent)
