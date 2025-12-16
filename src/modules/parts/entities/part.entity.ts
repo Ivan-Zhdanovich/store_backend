@@ -1,4 +1,3 @@
-import { IsDefined, IsNotEmpty } from 'class-validator';
 import { Category } from 'src/modules/categories/entities/category.entity';
 import { Supplier } from 'src/modules/suppliers/entities/supplier.entity';
 import {
@@ -16,7 +15,6 @@ export class Part {
   id: number;
 
   @Column()
-  @IsDefined()
   cat_id: number;
 
   @Column()
@@ -24,15 +22,12 @@ export class Part {
 
   @Index()
   @Column({ type: 'varchar', length: 50 })
-  @IsNotEmpty()
   code: string;
 
   @Column({ type: 'varchar', length: 255 })
-  @IsNotEmpty()
   name: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  @IsDefined()
   price: number;
 
   @Column({ type: 'tinyint', width: 1, default: 0 })

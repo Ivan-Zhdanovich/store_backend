@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Subcategory } from './subcategory.entity';
-import { IsNotEmpty } from 'class-validator';
 
 @Entity('Categories')
 export class Category {
@@ -16,7 +15,6 @@ export class Category {
   id: number;
 
   @Column({ type: 'varchar', length: 100 })
-  @IsNotEmpty()
   name: string;
 
   @Column({ type: 'int', nullable: true })
