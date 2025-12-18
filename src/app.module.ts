@@ -2,16 +2,16 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CategoriesModule } from './modules/categories/categories.module';
-import { CategoriesService } from './modules/categories/categories.service';
-import { PartsService } from './modules/parts/parts.service';
-import { PartsController } from './modules/parts/parts.controller';
 import { PartsModule } from './modules/parts/parts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SuppliersModule } from './modules/suppliers/suppliers.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -23,12 +23,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        // synchronize: true,
       }),
     }),
     CategoriesModule,
     PartsModule,
+    SuppliersModule,
   ],
-  controllers: [AppController, PartsController],
-  providers: [AppService, CategoriesService, PartsService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -7,7 +7,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Subcategory } from './subcategory.entity';
 
 @Entity('Categories')
 export class Category {
@@ -29,7 +28,4 @@ export class Category {
 
   @OneToMany(() => Category, (category) => category.parent)
   children: Category[];
-
-  @OneToMany(() => Subcategory, (subcategory) => subcategory.category)
-  subcategories: Subcategory[];
 }
