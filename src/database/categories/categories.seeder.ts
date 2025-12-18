@@ -4,6 +4,7 @@ import { Seeder } from 'nestjs-seeder';
 import { Category } from 'src/modules/categories/entities/category.entity';
 import { CategoriesRepository } from 'src/modules/categories/repositories/categories.repository';
 import { categoriesPayload } from './categories.data';
+import { IsNull, Not } from 'typeorm';
 
 @Injectable()
 export class CategoriesSeeder implements Seeder {
@@ -28,6 +29,6 @@ export class CategoriesSeeder implements Seeder {
   }
 
   async drop(): Promise<any> {
-    return this.categoriesRepository.delete({});
+    return this.categoriesRepository.delete({ id: Not(IsNull()) });
   }
 }
