@@ -51,9 +51,9 @@ export class PartsSeeder implements Seeder {
         price: parseFloat(
           faker.commerce.price({ min: 500, max: 50000, dec: 2 }),
         ),
-        in_stock: faker.helpers.arrayElement([0, 1]),
-        is_new: newIndexes.includes(i) ? 1 : 0,
-        is_sale: saleIndexes.includes(i) ? 1 : 0,
+        in_stock: faker.datatype.boolean(),
+        is_new: newIndexes.includes(i),
+        is_sale: saleIndexes.includes(i),
       });
       partsToCreate.push(part);
     }

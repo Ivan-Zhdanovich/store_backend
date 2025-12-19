@@ -17,7 +17,7 @@ export class Category {
   name: string;
 
   @Column({ type: 'int', nullable: true })
-  parentId: number;
+  parent_id: number | null;
 
   @Index()
   @ManyToOne(() => Category, (category) => category.children, {
