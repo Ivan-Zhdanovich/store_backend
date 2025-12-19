@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -8,10 +9,14 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PartsService } from './parts.service';
 import { Part } from './entities/part.entity';
 import { CreatePartDto } from './dto/create-part-dto';
+import { PartsQueryDto } from './dto/parts-query-dto';
 
 @Controller('api/parts')
 export class PartsController {
@@ -24,8 +29,9 @@ export class PartsController {
   }
 
   @Get()
-  findAll(): Promise<Part[]> {
-    return this.partsService.findAll();
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async findAll(@Query() query: PartsQueryDto) {
+    return this.partsService.findAll(query);
   }
 
   @Get(':id')
@@ -39,5 +45,10 @@ export class PartsController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Part> {
     return this.partsService.update(id, part);
+  }
+
+  @Delete(':id')
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.partsService.remove(id);
   }
 }
