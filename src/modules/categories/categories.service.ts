@@ -13,7 +13,7 @@ export class CategoriesService {
 
   async findRootCategories(): Promise<Category[]> {
     return this.categoriesRepository.find({
-      where: { parentId: IsNull() },
+      where: { parent_id: IsNull() },
       relations: ['children'],
     });
   }

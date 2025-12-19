@@ -5,7 +5,7 @@ import {
   Entity,
   Index,
   JoinColumn,
-  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -30,20 +30,44 @@ export class Part {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
-  @Column({ type: 'tinyint', width: 1, default: 0 })
-  in_stock: number;
+  @Column({
+    type: 'tinyint',
+    width: 1,
+    default: 0,
+    transformer: {
+      from: (value: number) => !!value,
+      to: (value: boolean) => (value ? 1 : 0),
+    },
+  })
+  in_stock: boolean;
 
-  @Column({ type: 'tinyint', width: 4, default: 0 })
-  is_new: number;
+  @Column({
+    type: 'tinyint',
+    width: 1,
+    default: 0,
+    transformer: {
+      from: (value: number) => !!value,
+      to: (value: boolean) => (value ? 1 : 0),
+    },
+  })
+  is_new: boolean;
 
-  @Column({ type: 'tinyint', width: 1, default: 0 })
-  is_sale: number;
+  @Column({
+    type: 'tinyint',
+    width: 1,
+    default: 0,
+    transformer: {
+      from: (value: number) => !!value,
+      to: (value: boolean) => (value ? 1 : 0),
+    },
+  })
+  is_sale: boolean;
 
-  @ManyToMany(() => Category, { onDelete: 'RESTRICT' })
+  @ManyToOne(() => Category, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'cat_id' })
   category: Category;
 
-  @ManyToMany(() => Supplier, { onDelete: 'RESTRICT' })
+  @ManyToOne(() => Supplier, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'supplier_id' })
   supplier: Supplier;
 }
