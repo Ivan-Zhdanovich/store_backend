@@ -18,20 +18,18 @@ export class PartsService {
 
   async findAll(query: PartsQueryDto) {
     const { page, limit, sort } = query;
-    const queryBuilder = this.partsRepository.createQueryBuilder('part');
 
     const sortField = sort.substring(1);
     const sortOrder = sort.startsWith('-') ? 'DESC' : 'ASC';
 
-    const allowedSortFields = ['code', 'name', 'price', 'id'];
-    if (allowedSortFields.includes(sortField)) {
-      queryBuilder.orderBy(`part.${sortField}`, sortOrder);
-    }
-
-    const skip = (page - 1) * limit;
-    queryBuilder.skip(skip).take(limit);
-
-    const [items, total] = await queryBuilder.getManyAndCount();
+    const [items, total] = await this.partsRepository.findAndCount({
+      relations: ['category', 'supplier'],
+      order: {
+        [sortField]: sortOrder,
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
 
     return {
       items,
@@ -46,7 +44,10 @@ export class PartsService {
   }
 
   async findOneById(id: number): Promise<Part> {
-    const part = await this.partsRepository.findOneBy({ id });
+    const part = await this.partsRepository.findOne({
+      where: { id },
+      relations: ['category', 'supplier'],
+    });
     if (!part) {
       throw new NotFoundException(`Part with id ${id} not found`);
     }

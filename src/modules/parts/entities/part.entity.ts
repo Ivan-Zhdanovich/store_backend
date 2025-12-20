@@ -14,10 +14,10 @@ export class Part {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ name: 'cat_id' })
   cat_id: number;
 
-  @Column()
+  @Column({ name: 'supplier_id' })
   supplier_id: number;
 
   @Index()
@@ -63,11 +63,11 @@ export class Part {
   })
   is_sale: boolean;
 
-  @ManyToOne(() => Category, { onDelete: 'RESTRICT' })
-  @JoinColumn({ name: 'cat_id' })
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'cat_id', referencedColumnName: 'id' })
   category: Category;
 
-  @ManyToOne(() => Supplier, { onDelete: 'RESTRICT' })
-  @JoinColumn({ name: 'supplier_id' })
+  @ManyToOne(() => Supplier)
+  @JoinColumn({ name: 'supplier_id', referencedColumnName: 'id' })
   supplier: Supplier;
 }
