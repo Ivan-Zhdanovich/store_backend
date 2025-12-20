@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { Supplier } from './entities/supplier.entity';
 import { SuppliersService } from './suppliers.service';
 
-@Controller('suppliers')
+@Controller('api/suppliers')
 export class SuppliersController {
   constructor(private suppliersService: SuppliersService) {}
 
